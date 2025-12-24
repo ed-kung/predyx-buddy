@@ -749,8 +749,9 @@
             const profitClass = profit >= 0 ? 'profit-positive' : 'profit-negative';
             summaryDiv.innerHTML = `
                 <div class="strategy-item"><span>Total Cost</span><span class="metric">${cost.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
-                <div class="strategy-item"><span>Expected Payout</span><span class="metric">${payout.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
-                <div class="strategy-item"><span>Expected Profit</span><span class="metric ${profitClass}">${profit.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
+                <div class="strategy-item"><span>Expected Payout <span class="info-icon">i<span class="tooltip">Expected payout and profit are calculated using your target probabilities.</span></span></span><span class="metric">${payout.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
+                <div class="strategy-item"><span>Expected Profit <span class="info-icon">i<span class="tooltip">Expected payout and profit are calculated using your target probabilities.</span></span></span><span class="metric ${profitClass}">${profit.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span>
+</div>
             `;
 
             // Probabilities
