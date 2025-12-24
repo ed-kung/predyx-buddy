@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predyx Buddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #131820;
+            --bg-tertiary: #1a2030;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #0099ff;
+            --text-primary: #e8ecf1;
+            --text-secondary: #8b95a8;
+            --text-tertiary: #5a6475;
+            --border: #2a3442;
+            --profit: #00d4aa;
+            --loss: #ff5757;
+            --warning: #ffb347;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #0d1219 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 153, 255, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 32px rgba(0, 212, 170, 0.1);
+        }
+
+        .panel-header {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(0, 212, 170, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .outcomes-table {
+            margin-top: 1rem;
+        }
+
+        .outcome-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .outcome-row:first-child {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: 1.5rem;
+        }
+
+        .outcome-row:first-child input {
+            pointer-events: none;
+            background: transparent;
+            border: none;
+            padding: 0;
+            color: var(--text-tertiary);
+        }
+
+        .add-outcome-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 0.75rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-outcome-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            background: rgba(0, 212, 170, 0.05);
+        }
+
+        .strategy-output {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .strategy-section {
+            margin-bottom: 2rem;
+        }
+
+        .strategy-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .strategy-header {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .strategy-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .strategy-item:last-child {
+            border-bottom: none;
+        }
+
+        .buy {
+            color: var(--profit);
+        }
+
+        .sell {
+            color: var(--loss);
+        }
+
+        .metric {
+            font-weight: 600;
+        }
+
+        .profit-positive {
+            color: var(--profit);
+        }
+
+        .profit-negative {
+            color: var(--loss);
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 1.5rem 0;
+        }
+
+        .validation-error {
+            color: var(--loss);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .probability-bar {
+            height: 4px;
+            background: var(--bg-primary);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .probability-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transition: width 0.3s ease;
+        }
+
+        .remove-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .remove-btn:hover {
+            color: var(--loss);
+            background: rgba(255, 87, 87, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Predyx Buddy</h1>
+            <p class="subtitle">LMSR Strategy Calculator</p>
+        </header>
+
+        <div class="grid">
+            <div class="panel">
+                <div class="panel-header">Parameters</div>
+                
+                <div class="input-group">
+                    <label for="liquidity">Liquidity Parameter (b)</label>
+                    <input type="number" id="liquidity" value="1000" min="1" step="100">
+                </div>
+
+                <div class="input-group">
+                    <label for="sellBias">Sell Bias</label>
+                    <input type="number" id="sellBias" value="0" min="0" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label>
+                        Conservative Bias
+                        <span class="slider-value" id="conservativeBiasValue">0.00</span>
+                    </label>
+                    <input type="range" id="conservativeBias" value="0.0" min="0" max="1" step="0.01">
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="input-group">
+                    <label>Outcomes</label>
+                    <div class="outcomes-table" id="outcomesTable">
+                        <div class="outcome-row">
+                            <input type="text" value="Outcome" readonly>
+                            <input type="text" value="Current %" readonly>
+                            <input type="text" value="Target %" readonly>
+                        </div>
+                    </div>
+                    <button class="add-outcome-btn" id="addOutcome">+ Add Outcome</button>
+                </div>
+
+                <div id="validationError" class="validation-error" style="display: none;"></div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">Recommended Strategy</div>
+                <div class="strategy-output" id="strategyOutput">
+                    <div class="strategy-section">
+                        <div class="strategy-header">Trades</div>
+                        <div id="trades">Configure outcomes to see recommendations</div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="strategy-section">
+                        <div class="strategy-header">Summary</div>
+                        <div id="summary"></div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="strategy-section">
+                        <div class="strategy-header">New Probabilities</div>
+                        <div id="probabilities"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let outcomes = [
+            { name: 'YES', current: 50.00, target: 75.0 },
+            { name: 'NO', current: 50.00, target: 25.0 }
+        ];
+
+        function renderOutcomes() {
+            const table = document.getElementById('outcomesTable');
+            const header = table.querySelector('.outcome-row:first-child');
+            table.innerHTML = '';
+            table.appendChild(header);
+
+            outcomes.forEach((outcome, index) => {
+                const row = document.createElement('div');
+                row.className = 'outcome-row';
+                row.style.animationDelay = `${index * 0.05}s`;
+                
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.value = outcome.name;
+                nameInput.addEventListener('input', (e) => {
+                    outcomes[index].name = e.target.value;
+                    calculate();
+                });
+
+                const currentInput = document.createElement('input');
+                currentInput.type = 'number';
+                currentInput.value = outcome.current.toFixed(2);
+                currentInput.min = '0.01';
+                currentInput.max = '99.99';
+                currentInput.step = '0.01';
+                currentInput.addEventListener('input', (e) => {
+                    outcomes[index].current = parseFloat(e.target.value) || 0;
+                    calculate();
+                });
+
+                const targetInput = document.createElement('input');
+                targetInput.type = 'number';
+                targetInput.value = outcome.target.toFixed(2);
+                targetInput.min = '0.01';
+                targetInput.max = '99.99';
+                targetInput.step = '0.01';
+                targetInput.addEventListener('input', (e) => {
+                    outcomes[index].target = parseFloat(e.target.value) || 0;
+                    calculate();
+                });
+
+                row.appendChild(nameInput);
+                row.appendChild(currentInput);
+                row.appendChild(targetInput);
+
+                if (outcomes.length > 2) {
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.innerHTML = '×';
+                    removeBtn.title = 'Remove outcome';
+                    removeBtn.addEventListener('click', () => {
+                        outcomes.splice(index, 1);
+                        renderOutcomes();
+                        calculate();
+                    });
+                    row.appendChild(removeBtn);
+                }
+
+                table.appendChild(row);
+            });
+        }
+
+        document.getElementById('addOutcome').addEventListener('click', () => {
+            const n = outcomes.length + 1;
+            const equalProb = (100 / n).toFixed(2);
+            outcomes.push({
+                name: `Outcome ${n}`,
+                current: parseFloat(equalProb),
+                target: parseFloat(equalProb)
+            });
+            renderOutcomes();
+            calculate();
+        });
+
+        document.getElementById('liquidity').addEventListener('input', calculate);
+        document.getElementById('sellBias').addEventListener('input', calculate);
+        
+        const conservativeBiasSlider = document.getElementById('conservativeBias');
+        const conservativeBiasValue = document.getElementById('conservativeBiasValue');
+        conservativeBiasSlider.addEventListener('input', (e) => {
+            conservativeBiasValue.textContent = parseFloat(e.target.value).toFixed(2);
+            calculate();
+        });
+
+        function validate() {
+            const currentSum = outcomes.reduce((sum, o) => sum + o.current, 0);
+            const targetSum = outcomes.reduce((sum, o) => sum + o.target, 0);
+            const errorDiv = document.getElementById('validationError');
+
+            if (Math.abs(currentSum - 100) > 0.1) {
+                errorDiv.textContent = `Current probabilities must sum to 100% (currently ${currentSum.toFixed(2)}%)`;
+                errorDiv.style.display = 'block';
+                return false;
+            }
+
+            if (Math.abs(targetSum - 100) > 0.1) {
+                errorDiv.textContent = `Target probabilities must sum to 100% (currently ${targetSum.toFixed(2)}%)`;
+                errorDiv.style.display = 'block';
+                return false;
+            }
+
+            errorDiv.style.display = 'none';
+            return true;
+        }
+
+        function calculate() {
+            if (!validate()) {
+                document.getElementById('trades').innerHTML = '<div style="color: var(--loss)">Fix validation errors to see strategy</div>';
+                document.getElementById('summary').innerHTML = '';
+                document.getElementById('probabilities').innerHTML = '';
+                return;
+            }
+
+            const b = parseFloat(document.getElementById('liquidity').value);
+            const sellBias = parseFloat(document.getElementById('sellBias').value);
+            const conservativeBias = parseFloat(document.getElementById('conservativeBias').value);
+
+            const p0 = outcomes.map(o => o.current / 100);
+            const p = outcomes.map(o => o.target / 100);
+
+            // Calculate current shares
+            let x0 = p0.map(prob => b * Math.log(prob / p0[0]));
+            const minX0 = Math.min(...x0);
+            x0 = x0.map(x => x - minX0);
+
+            // Calculate target shares
+            let x = p.map(prob => b * Math.log(prob / p[0]));
+            const minX = Math.min(...x);
+            x = x.map(val => val - minX);
+
+            // Calculate deltas
+            let delta = x.map((val, i) => val - x0[i]);
+            const minDelta = Math.min(...delta);
+            delta = delta.map(d => d - minDelta);
+
+            // Apply biases
+            delta = delta.map(d => d - sellBias);
+            delta = delta.map(d => d * (1 - conservativeBias));
+
+            // Round to whole shares
+            delta = delta.map(d => Math.round(d));
+
+            // Calculate cost
+            const sumExp0 = x0.reduce((sum, val) => sum + Math.exp(val / b), 0);
+            const sumExpNew = x0.map((val, i) => val + delta[i]).reduce((sum, val) => sum + Math.exp(val / b), 0);
+            const cost = b * (Math.log(sumExpNew) - Math.log(sumExp0));
+
+            // Calculate expected payout and profit
+            const payout = p.reduce((sum, prob, i) => sum + prob * delta[i], 0);
+            const profit = payout - cost;
+
+            // Calculate new probabilities
+            const xNew = x0.map((val, i) => val + delta[i]);
+            const sumExpFinal = xNew.reduce((sum, val) => sum + Math.exp(val / b), 0);
+            const pNew = xNew.map(val => Math.exp(val / b) / sumExpFinal);
+
+            // Render output
+            renderStrategy(delta, cost, payout, profit, pNew);
+        }
+
+        function renderStrategy(delta, cost, payout, profit, pNew) {
+            const tradesDiv = document.getElementById('trades');
+            const summaryDiv = document.getElementById('summary');
+            const probabilitiesDiv = document.getElementById('probabilities');
+
+            // Trades
+            let tradesHTML = '';
+            let hasTradesDelta = false;
+            delta.forEach((d, i) => {
+                if (d > 0) {
+                    tradesHTML += `<div class="strategy-item"><span>Buy ${Math.abs(d).toLocaleString()} shares of ${outcomes[i].name}</span><span class="buy">+${Math.abs(d).toLocaleString()}</span></div>`;
+                    hasTradesDelta = true;
+                } else if (d < 0) {
+                    tradesHTML += `<div class="strategy-item"><span>Sell ${Math.abs(d).toLocaleString()} shares of ${outcomes[i].name}</span><span class="sell">-${Math.abs(d).toLocaleString()}</span></div>`;
+                    hasTradesDelta = true;
+                }
+            });
+
+            if (!hasTradesDelta) {
+                tradesHTML = '<div style="color: var(--text-secondary)">No trades recommended</div>';
+            }
+
+            tradesDiv.innerHTML = tradesHTML;
+
+            // Summary
+            const profitClass = profit >= 0 ? 'profit-positive' : 'profit-negative';
+            summaryDiv.innerHTML = `
+                <div class="strategy-item"><span>Total Cost</span><span class="metric">${cost.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
+                <div class="strategy-item"><span>Expected Payout</span><span class="metric">${payout.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
+                <div class="strategy-item"><span>Expected Profit</span><span class="metric ${profitClass}">${profit.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
+            `;
+
+            // Probabilities
+            let probHTML = '';
+            pNew.forEach((prob, i) => {
+                const percentage = (prob * 100).toFixed(2);
+                probHTML += `
+                    <div class="strategy-item">
+                        <span>${outcomes[i].name}</span>
+                        <span class="metric">${percentage}%</span>
+                    </div>
+                    <div class="probability-bar">
+                        <div class="probability-fill" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+            });
+            probabilitiesDiv.innerHTML = probHTML;
+        }
+
+        // Initialize
+        renderOutcomes();
+        calculate();
+    </script>
+</body>
+</html>
