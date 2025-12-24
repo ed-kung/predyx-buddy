@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predyx Buddy</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         :root {
             --bg-primary: #0a0e17;
@@ -129,6 +130,26 @@
 
         .input-group {
             margin-bottom: 1.5rem;
+        }
+
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            color: var(--muted);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.08);
+            text-decoration: none;
+            transition: background .15s ease, color .15s ease; 
+        }
+
+        .icon-btn:hover {
+            background: rgba(255,255,255,.06);
+            color: var(--text);
+            border-color: rgba(255,255,255,.18);
         }
 
         label {
@@ -753,5 +774,13 @@
         renderOutcomes();
         calculate();
     </script>
+    <footer style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;">
+        <div>
+            © 2025 Predyx Buddy. All rights reserved. 
+            <a class="icon-btn" href="https://github.com/ed-kung/predyx-buddy" target="_blank" rel="noopener">
+                <i class="fa fa-github" style="font-size: 1.2rem"></i>
+            </a>
+        </div>
+    </footer>
 </body>
 </html>
