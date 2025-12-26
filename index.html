@@ -483,7 +483,16 @@
                 <div class="panel-header">Parameters</div>
                 
                 <div class="input-group">
-                    <label for="liquidity">Market Liquidity (Sats)</label>
+                    <label class="label-with-info" for="liquidity">
+                        <span>Market Liquidity (Sats)</span>
+                        <span class="info-icon">
+                            i
+                            <span class="tooltip">
+                                <div class="tooltip-title">Market Liquidity</div>
+                                This is the teardrop icon on the Predyx market.
+                            </span>
+                        </span>
+                    </label>
                     <input type="number" id="liquidity" value="1000" min="1" step="100">
                 </div>
 
@@ -757,7 +766,7 @@
             // Summary
             const profitClass = profit >= 0 ? 'profit-positive' : 'profit-negative';
             summaryDiv.innerHTML = `
-                <div class="strategy-item"><span>Total Cost</span><span class="metric">${cost.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
+                <div class="strategy-item"><span>Total Cost <span class="info-icon">i<span class="tooltip">Cost does not include transaction fees. Be sure to check your market for transaction fees.</span></span></span><span class="metric">${cost.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
                 <div class="strategy-item"><span>Expected Payout <span class="info-icon">i<span class="tooltip">Expected payout and profit are calculated using your target probabilities.</span></span></span><span class="metric">${payout.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
                 <div class="strategy-item"><span>Expected Profit</span><span class="metric ${profitClass}">${profit.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span>
 </div>
