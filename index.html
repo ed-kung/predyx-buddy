@@ -489,11 +489,11 @@
 
                 <div class="input-group">
                     <label class="label-with-info">
-                        <span>Sell Bias</span>
+                        <span>Shares to Sell</span>
                         <span class="info-icon">
                             i
                             <span class="tooltip">
-                                <div class="tooltip-title">Sell Bias</div>
+                                <div class="tooltip-title">Shares to Sell</div>
                                 Increase this if you want to sell shares, otherwise the strategy will focus only on buying.
                             </span>
                         </span>
@@ -503,11 +503,11 @@
 
                 <div class="input-group">
                     <label class="label-with-info">
-                        <span>Conservative Bias</span>
+                        <span>Conservatism</span>
                         <span class="info-icon">
                             i
                             <span class="tooltip">
-                                <div class="tooltip-title">Conservative Bias</div>
+                                <div class="tooltip-title">Conservatism</div>
                                 Scales down recommended trades to adopt a more conservative approach.
                             </span>
                         </span>
@@ -519,7 +519,16 @@
                 <div class="divider"></div>
 
                 <div class="input-group">
-                    <label>Outcomes</label>
+                    <label class="label-with-info">
+                        <span>Outcomes</span>
+                        <span class="info-icon">
+                            i
+                            <span class="tooltip">
+                                <div class="tooltip-title">Outcomes</div>
+                                Enter the possible outcomes, their current market probabilities, and what you think the correct probabilities should be.
+                            </span>
+                        </span>
+                    </label>
                     <div class="outcomes-table" id="outcomesTable">
                         <div class="outcome-row">
                             <input type="text" value="Outcome" readonly>
@@ -750,7 +759,7 @@
             summaryDiv.innerHTML = `
                 <div class="strategy-item"><span>Total Cost</span><span class="metric">${cost.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
                 <div class="strategy-item"><span>Expected Payout <span class="info-icon">i<span class="tooltip">Expected payout and profit are calculated using your target probabilities.</span></span></span><span class="metric">${payout.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span></div>
-                <div class="strategy-item"><span>Expected Profit <span class="info-icon">i<span class="tooltip">Expected payout and profit are calculated using your target probabilities.</span></span></span><span class="metric ${profitClass}">${profit.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span>
+                <div class="strategy-item"><span>Expected Profit</span><span class="metric ${profitClass}">${profit.toLocaleString(undefined, {maximumFractionDigits: 0})} sats</span>
 </div>
             `;
 
@@ -777,7 +786,7 @@
     </script>
     <footer style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;">
         <div>
-            © 2025 Predyx Buddy. All rights reserved. 
+            © 2025 @SimpleStacker. All rights reserved. 
             <a class="icon-btn" href="https://github.com/ed-kung/predyx-buddy" target="_blank" rel="noopener">
                 <i class="fa fa-github" style="font-size: 1.2rem"></i>
             </a>
